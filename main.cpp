@@ -58,7 +58,7 @@ int main() {
 
     inputFile.close();
 
-    tspNearestNeighbor(n, graph);
+    tspRepetitiveNearestNeighbor(n, graph);
 
     return 0;
 }

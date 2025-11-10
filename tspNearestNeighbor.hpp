@@ -1,11 +1,11 @@
 /*
-   Traveling Salesman Problem (TSP) - Nearest Neighbor Heuristic
-
+   Traveling Salesman Problem (TSP) - Nearest Neighbor 
     Description:
-    This file implements a function that approximates a solution 
-    to the Traveling Salesman Problem (TSP) using the Nearest Neighbor 
-    heuristic. It calculates a route that visits every neighborhood 
-    exactly once and returns to the starting point.
+    This file implements two functions:
+    tspNearestNeighbor() — Runs the Nearest Neighbor heuristic
+    from a specific starting city.
+    tspRepetitiveNearestNeighbor() — Runs tspNearestNeighbor()
+    from every city and selects the best (shortest) route.
 */
 
 #ifndef TSP_NEAREST_NEIGHBOR_HPP
@@ -13,38 +13,36 @@
 
 #include <iostream>
 #include <vector>
-#include <climits>
 using namespace std;
 
 /*
     Function: tspNearestNeighbor
     Description:
-        Approximates a solution for the Traveling Salesman Problem (TSP)
-        using the Nearest Neighbor heuristic, starting from node 0 
-        (neighborhood A) and returning to it at the end.
-    
+    Runs the Nearest Neighbor algorithm starting from a specific city.
+
     Parameters:
-        - n: number of neighborhoods (nodes in the graph)
-        - graph: adjacency matrix representing distances between neighborhoods
-    
+    n: number of cities
+    start: index of the starting city (0-based)
+    graph: adjacency matrix with distances between cities
+
     Return value:
-        None. The function prints the route and the total distance.
+    A pair containing:
+     Total distance of the route
+     Vector with the route order
 */
-void tspNearestNeighbor(int n, vector<vector<int>> &graph) {
-    vector<bool> visited(n, false);  // Tracks which neighborhoods have been visited
-    vector<int> path;                // Stores the route path
-    int current = 0;                 // Start at neighborhood A (index 0)
-    int totalDistance = 0;           // Accumulates total travel distance
+pair<int, vector<int>> tspNearestNeighbor(int n, int start, const vector<vector<int>> &graph) {
+    vector<bool> visited(n, false);  
+    vector<int> path;                
+    int current = start;             
+    int totalDistance = 0;           
 
     path.push_back(current);
     visited[current] = true;
 
-    // Visit all neighborhoods exactly once
     for (int i = 1; i < n; i++) {
         int nearest = -1;
         int minDistance = INT_MAX;
 
-        // Find the closest unvisited neighborhood
         for (int j = 0; j < n; j++) {
             if (!visited[j] && graph[current][j] > 0 && graph[current][j] < minDistance) {
                 minDistance = graph[current][j];
@@ -52,7 +50,6 @@ void tspNearestNeighbor(int n, vector<vector<int>> &graph) {
             }
         }
 
-        // Move to the closest neighborhood
         if (nearest != -1) {
             visited[nearest] = true;
             path.push_back(nearest);
@@ -61,20 +58,49 @@ void tspNearestNeighbor(int n, vector<vector<int>> &graph) {
         }
     }
 
-    // Return to the origin (A)
-    if (graph[current][0] > 0) {
-        totalDistance += graph[current][0];
+    if (graph[current][start] > 0) {
+        totalDistance += graph[current][start];
     }
-    path.push_back(0);
+    path.push_back(start);
+
+    // Return both total distance and path
+    return {totalDistance, path};
+}
+
+/*
+    Function: tspRepetitiveNearestNeighbor
+    Description:
+    Executes the Nearest Neighbor heuristic starting from every city
+    and selects the route with the smallest total distance.
+
+    Parameters:
+    n: number of neighborhoods
+    graph: adjacency matrix with distances between neighborhoods
+
+    Return value:
+    None — it prints the best route and total distance.
+*/
+void tspRepetitiveNearestNeighbor(int n, const vector<vector<int>> &graph) {
+    int bestDistance = INT_MAX;
+    vector<int> bestPath;
+
+    for (int start = 0; start < n; start++) {
+        pair<int, vector<int>> result = tspNearestNeighbor(n, start, graph);
+
+        if (result.first < bestDistance) {
+            bestDistance = result.first;
+            bestPath = result.second;
+        }
+    }
 
     cout << "\n2. Mail Delivery Route:\n";
-    for (int i = 0; i < static_cast<int>(path.size()); i++) {
-        cout << char('A' + path[i]);
-        if (i < static_cast<int>(path.size()) - 1) {
+    for (int i = 0; i < static_cast<int>(bestPath.size()); i++) {
+        cout << char('A' + bestPath[i]);
+        if (i < static_cast<int>(bestPath.size()) - 1) {
             cout << " -> ";
         }
     }
-    cout << "\nTotal distance: " << totalDistance ;
+    cout << "\nTotal distance: " << bestDistance << " km\n";
 }
 
 #endif
