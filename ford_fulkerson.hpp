@@ -6,6 +6,8 @@
 #include <queue>
 #include <climits>
 
+// Structure: Edge
+// Represents an edge in the graph with a destination node and capacity
 struct Edge {
     int to;
     int capacity;
@@ -19,6 +21,16 @@ std::vector<std::vector<int>> adj;
 
 using Graph = std::vector<std::vector<Edge>>;
 
+// Function: readFile
+// Reads a graph from a file formatted similarly to DIMACS max flow instances.
+// The function initializes global variables for adjacency and capacity matrices.
+// Parameters
+// - filename, path to the input file containing graph data.
+//
+// Time Complexity: O(V^2 + E)
+//   - Reading file lines: O(V + E)
+//   - Constructing adjacency and capacity structures: O(V^2) in worst case
+// Space Complexity: O(V^2)
 void readFile(const std::string& filename) {
     std::ifstream file(filename);
     if (!file.is_open()) {
@@ -65,6 +77,8 @@ void readFile(const std::string& filename) {
         }
     }
     file.close();
+
+    // Initialize capacity matrix and adjacency list for Edmonds-Karp
     n = nodes;
     capacity.assign(n, std::vector<int>(n, 0));
     adj.resize(n);
@@ -79,6 +93,17 @@ void readFile(const std::string& filename) {
     
 }
 
+// Function: bfs
+// Performs a BFS to find an augmenting path in the residual graph
+// Returns the flow possible through that path (0 if no path found)
+// Parameters:
+// - s, source node
+// - t, sink node
+// - parent, vector to store the parent of each node in the BFS traversal
+// Returns:
+//   Maximum flow that can be pushed through the found augmenting path
+// Time Complexity: O(V + E)
+// Space Complexity: O(V)
 int bfs(int s, int t, std::vector<int>& parent) {
     std::fill(parent.begin(), parent.end(), -1);
     parent[s] = -2;
@@ -105,6 +130,18 @@ int bfs(int s, int t, std::vector<int>& parent) {
 
     return 0;
 }
+
+// Function: edmondsKarp
+// Implements the Edmonds-Karp algorithm for finding the maximum flow
+// Uses BFS to find shortest augmenting paths iteratively
+// Parameters:
+// - nodes, total number of nodes in the graph
+// - s, source node
+// - t, sink node
+// Returns:
+//   Maximum flow value from source to sink.
+// Time Complexity: O(V * E^2)
+// Space Complexity: O(V^2)
 int edmondsKarp(int nodes, int s, int t) {
     int flow = 0;
     std::vector<int> parent(nodes);
