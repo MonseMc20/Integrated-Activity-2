@@ -93,7 +93,7 @@ void tspRepetitiveNearestNeighbor(int n, const vector<vector<int>> &graph) {
         }
     }
 
-    cout << "\n2. Mail Delivery Route:\n";
+    cout << "\n PART 2 :\n";
     for (int i = 0; i < static_cast<int>(bestPath.size()); i++) {
         cout << char('A' + bestPath[i]);
         if (i < static_cast<int>(bestPath.size()) - 1) {

@@ -33,7 +33,7 @@ int main() {
     }
 
     auto [cost, mstEdges] = kruskalsMST(V, edges);
-
+      cout << "\n PART 1:\n";
     for (auto &e : mstEdges) {
         cout << e[0] << " " << e[1] << " ";;
     }
@@ -60,7 +60,7 @@ int main() {
     inputFile.close();
 
     tspRepetitiveNearestNeighbor(n, graph);
-    cout<<"PARTE 4"<<endl;
+     cout << "\n PART 4:\n";
 //  --- Part 4 ---
     int ret = system(".\\build\\Release\\voronoi.exe"); // Para Windows
     if (ret != 0) {
