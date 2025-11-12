@@ -1,6 +1,7 @@
 #include "tspNearestNeighbor.hpp"
 #include "kruskal.hpp"
 #include <fstream>
+#include <cstdlib>  
 using namespace std;
 
 int main() {
@@ -59,6 +60,13 @@ int main() {
     inputFile.close();
 
     tspRepetitiveNearestNeighbor(n, graph);
+    cout<<"PARTE 4"<<endl;
+//  --- Part 4 ---
+    int ret = system(".\\build\\Release\\voronoi.exe"); // Para Windows
+    if (ret != 0) {
+        std::cerr << "Error al ejecutar voronoi.exe\n";
+    }
+    return 0;
 
     return 0;
 }
