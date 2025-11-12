@@ -1,5 +1,6 @@
 #include "tspNearestNeighbor.hpp"
 #include "kruskal.hpp"
+#include "fordFulkerson.hpp"
 #include <fstream>
 #include <cstdlib>  
 using namespace std;
@@ -58,6 +59,17 @@ int main() {
     }
 
     inputFile.close();
+
+    // --- part 3 ---
+    
+    readFile("small_instance.dimacs");
+    if (source == -1 || sink == -1) {
+        return 1;
+    }
+    int maxFlow = edmondsKarp(n, source, sink);
+    std::cout << "The maximum possible flow is " << maxFlow << std::endl;
+    return 0;
+
 
     tspRepetitiveNearestNeighbor(n, graph);
      cout << "\n PART 4:\n";
