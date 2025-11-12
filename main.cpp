@@ -1,6 +1,6 @@
 #include "tspNearestNeighbor.hpp"
 #include "kruskal.hpp"
-#include "fordFulkerson.hpp"
+#include "ford_fulkerson.hpp"
 #include <fstream>
 #include <cstdlib>  
 using namespace std;
