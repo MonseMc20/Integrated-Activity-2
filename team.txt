@@ -1,0 +1,3 @@
+Anett Martínez Vázquez A01645033 - Implemented part 2
+Héctor Eduardo Ayala Gudiño A01638996 - Implemented part 4
+Monserrat Morales Cañez A01638959 - Implemented part 1 and 3

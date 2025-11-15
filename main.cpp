@@ -1,5 +1,6 @@
 #include "tspNearestNeighbor.hpp"
 #include "kruskal.hpp"
+#include "ford_fulkerson.hpp"
 #include <fstream>
 #include <cstdlib>  
 using namespace std;
@@ -33,7 +34,7 @@ int main() {
     }
 
     auto [cost, mstEdges] = kruskalsMST(V, edges);
-
+      cout << "\n PART 1:\n";
     for (auto &e : mstEdges) {
         cout << e[0] << " " << e[1] << " ";;
     }
@@ -59,8 +60,19 @@ int main() {
 
     inputFile.close();
 
+    // --- part 3 ---
+    
+    readFile("small_instance.dimacs");
+    if (source == -1 || sink == -1) {
+        return 1;
+    }
+    int maxFlow = edmondsKarp(n, source, sink);
+    std::cout << "The maximum possible flow is " << maxFlow << std::endl;
+    return 0;
+
+
     tspRepetitiveNearestNeighbor(n, graph);
-    cout<<"PARTE 4"<<endl;
+     cout << "\n PART 4:\n";
 //  --- Part 4 ---
     int ret = system(".\\build\\Release\\voronoi.exe"); // Para Windows
     if (ret != 0) {
